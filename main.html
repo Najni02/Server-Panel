@@ -7,20 +7,58 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Minecraft Server-Panel</h1>
-    <div class="main">
-        <h2>Server</h2>
-        <div class="server">
-            <div class="flex">
-                <h3>BungeeCord</h3>
-                <button id="Bungeecord" class="green" onclick="send('Bungeecord')">Starten</button>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="https://janamrhein.ch/">Website</a></li>
+                <li><a>Konsole</a></li>
+                <li><a>Spieler</a></li>
+                <li><div class="flex">
+                    <button onclick="restartPanel()">Panel neu starten</button>
+                    <button onclick="shutdown()">Server herunterfahren</button>
+                </div></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Minecraft Server-Panel</h1>
+        <div class="main">
+            <h2>Haupt-Instanzen</h2>
+            <div class="server">
+                <div class="flex">
+                    <h3>BungeeCord</h3>
+                    <button id="Bungeecord" class="green" onclick="send('Bungeecord')">Starten</button>
+                </div>
             </div>
-            <div class="flex">
-                <h3>Minigames</h3>
-                <button id="Minigames" class="green" onclick="send('Minigames')">Starten</button>
+            <div id="start-all">
+                <h2>Games</h2>
+                <button class="green" onclick="startAll()">Alle starten</button>
+            </div>
+            <div class="server">
+                <div class="flex">
+                    <h3>Minigames</h3>
+                    <button id="Minigames" class="green" onclick="send('Minigames')">Starten</button>
+                </div>
+                <div class="flex">
+                    <h3>Arrow Fight</h3>
+                    <button id="Arrowfight" class="green" onclick="send('Arrowfight')">Starten</button>
+                </div>
+                <div class="flex">
+                    <h3>Bed Wars</h3>
+                    <button id="Bedwars" class="green" onclick="send('Bedwars')">Starten</button>
+                </div>
+                <div class="flex">
+                    <h3>Capture The Flag</h3>
+                    <button id="CTF" class="green" onclick="send('CTF')">Starten</button>
+                </div>
+                <div class="flex">
+                    <h3>Parcour</h3>
+                    <button id="Parcour" class="green" onclick="send('Parcour')">Starten</button>
+                </div>
+
             </div>
         </div>
-    </div>
+    </main>
     <script src="frontend.js"></script>
 </body>
 </html>

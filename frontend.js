@@ -1,22 +1,22 @@
 const backend = "http://192.168.2.52:3000/";
+const mcServers = ['Bungeecord', 'Minigames', 'Arrowfight', 'Bedwars', 'CTF', 'Parcour'];
 
 async function update() {
     try {
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 1000);
+        const timer = setTimeout(() => controller.abort(), 500);
 
-        const response = await fetch(backend + 'status' )
+        const response = await fetch(backend + 'status' , { signal: controller.signal });
         clearTimeout(timer);
         const text = await response.json();
-        const elements = ['Bungeecord', 'Minigames'];//, 'Arrowfight', 'Bedwars', 'CTF', 'Parcour', 'Survival'];
-        for (let i = 0; i < elements.length; i++) {
-            const btn = document.getElementById(elements[i]);
+        for (let i = 0; i < mcServers.length; i++) {
+            const btn = document.getElementById(mcServers[i]);
             btn.className = '';
-            switch (text[elements[i]]) {
+            switch (text[mcServers[i]]) {
                 case 0:
                     btn.textContent = "Starten";
                     btn.classList.add('green');
-                    btn.onclick = () => send(elements[i]);
+                    btn.onclick = () => send(mcServers[i]);
                     break;
                 case 1:
                     btn.textContent = "Startet...";
@@ -26,35 +26,33 @@ async function update() {
                 case 2:
                     btn.textContent = "Stoppen";
                     btn.classList.add('red');
-                    btn.onclick = () => stop(elements[i]);
+                    btn.onclick = () => stop(mcServers[i]);
                     break;
             }
         }
     }
     catch (error) {
-        location.href = "error.html";
+        location.href = "index.html";
     }
 };
 
 async function send(server) {
-    
     try {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 100);
 
-        const response = await fetch(backend + 'start?cmd=' + server)
+        const response = await fetch(backend + 'start?cmd=' + server, { signal: controller.signal });
         clearTimeout(timer);
         const text = await response.text();
-        const btn = document.getElementById(server);
 
         if (text === 'running') {
             update();
         } else {
-            location.href = "error.html";
+            location.href = "index.html";
         }
     }
     catch (error) {
-        location.href = "error.html";
+        console.error(error);
     }
 };
 
@@ -63,19 +61,58 @@ async function stop(server) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 100);
 
-        const response = await fetch(backend + 'stop?cmd=' + server)
+        const response = await fetch(backend + 'stop?cmd=' + server, { signal: controller.signal });
         clearTimeout(timer);
         const text = await response.text();
-        const btn = document.getElementById(server);
         
         if (text === 'stopped') {
             update();
         } else {
-            location.href = "error.html";
+            location.href = "index.html";
         }
     }
     catch (error) {
-        location.href = "error.html";
+        console.error(error);
+    }
+};
+
+async function restartPanel() {
+    try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 100);
+
+        const response = await fetch(backend + 'restart', { signal: controller.signal });
+        clearTimeout(timer);
+        const text = await response.text();
+        if (text === 'ok') {
+            location.href = "index.html";
+        } else { console.error('Backend konnte nicht neu gestartet werden'); }
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
+async function shutdown() {
+    try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 100);
+
+        const response = await fetch(backend + 'shutdown', { signal: controller.signal });
+        clearTimeout(timer);
+        const text = await response.text();
+        if (text === 'ok') {
+            console.log('Server-2 wird heruntergefahren...');
+        } else { console.error('Server-2 konnte nicht heruntergefahren werden.'); }
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
+
+function startAll() {
+    for (let i = 0; i < mcServers.length; i++) {
+         send(mcServers[i]);
+         console.log('Starte ' + mcServers[i]);
     }
 };
 
