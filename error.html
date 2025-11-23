@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Outfit:wght@100..900&display=swap'); /*Outfit*/
+        body {
+            font-family: Outfit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+    <h1 id="text"></h1>
+    <script>
+        const backend = "http://192.168.2.52:3000/";
+        const text = document.getElementById('text');
+        text.textContent = 'Verbinden...';
+        (async () => {
+        try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 2000);
+
+            const response = await fetch(backend + '/ping');
+            console.log(response);
+            clearTimeout(timer);
+            location.href = 'index.html';
+        }   
+        catch (error) { text.textContent = 'Fehler'; }
+    })();
+    </script>
+</body>
+</html>
