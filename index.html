@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mc Server Portal</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
 <body>
-    <h1>Minecraft Server-Panel</h1>
-    <div class="main">
-        <h2>Server</h2>
-        <div class="server">
-            <div class="flex">
-                <h3>BungeeCord</h3>
-                <button id="Bungeecord" class="green" onclick="send('Bungeecord')">Starten</button>
-            </div>
-            <div class="flex">
-                <h3>Minigames</h3>
-                <button id="Minigames" class="green" onclick="send('Minigames')">Starten</button>
-            </div>
-        </div>
-    </div>
-    <script src="frontend.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Outfit:wght@100..900&display=swap'); /*Outfit*/
+        body {
+            font-family: Outfit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+    <h1 id="text"></h1>
+    <script>
+        const backend = "http://192.168.2.52:3000/";
+        const text = document.getElementById('text');
+        text.textContent = 'Verbinden...';
+        (async () => {
+        try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 2000);
+
+            const response = await fetch(backend + '/ping');
+            console.log(response);
+            clearTimeout(timer);
+            location.href = 'index.html';
+        }   
+        catch (error) { text.textContent = 'Fehler'; }
+    })();
+    </script>
 </body>
 </html>
